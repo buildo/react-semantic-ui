@@ -567,6 +567,7 @@ module.exports = function(React, form, common) {
         props.value = this.props.value || 'true';
         props.type = 'checkbox';
         props.className = common.mergeClassNames(props.className);
+        props.ref = this.props.ref;
         return React.DOM.input(props);
       },
       getDOMValue: function(el) {
