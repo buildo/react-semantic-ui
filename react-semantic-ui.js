@@ -40,10 +40,10 @@ if (global.React) {
 }
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./lib/common":2,"./lib/form":3,"./lib/input":4,"./lib/layout":5}],2:[function(require,module,exports){
-var cache = { id: 0 },
+module.exports = function(React) {
+  var cache = { id: 0 },
     reactBackboneAware = !!React.mixins.exists('modelFieldValidator');
 
-module.exports = function(React) {
   return {
     uniqueId: function() {
       return 'rsui-' + cache.id++;
