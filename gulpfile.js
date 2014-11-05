@@ -1,9 +1,12 @@
-var header = require('gulp-header'),
+var $ = require('gulp-load-plugins')(),
+    header = require('gulp-header'),
     through = require('through2'),
     gutil = require('gulp-util'),
+    jshint = require('gulp-jshint'),
     browserify = require('gulp-browserify'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
+    watch = require('gulp-watch'),
     gulp = require('gulp'),
     fs = require('fs'),
     path = require('path');
@@ -15,8 +18,11 @@ var packageInfo = JSON.parse(fs.readFileSync('./package.json', {encoding: 'utf-8
     headerMinContent = fs.readFileSync('./_header.min.txt', {encoding: 'utf8'}),
     versionMatcher = new RegExp(name + ' v[0-9\.]+');
 
+
 headerContent = headerContent.replace(versionMatcher, name + ' v' + version);
 headerMinContent = headerMinContent.replace(versionMatcher, name + ' v' + version);
+
+var JS_LIB = './lib/*.js';
 
 function build() {
   var pipeline = gulp.src('./index.js')
@@ -24,6 +30,7 @@ function build() {
         transform: ['reactify']
       }))
       .pipe(rename('react-semantic-ui.js'))
+      .pipe(jshint())
       .pipe(header(headerContent))
       .pipe(gulp.dest('./'))  
       .pipe(uglify())
@@ -32,18 +39,41 @@ function build() {
       .pipe(gulp.dest('./'));
 }
 
-gulp.task('build', function() {
-  build();
+function _watch(debug) {
+  gulp.src(JS_LIB)
+      .pipe(watch(function() {
+        build(debug);
+      }));
+}
+
+
+gulp.task('jshint', function() {
+  return gulp.src(JS_LIB)
+    .pipe(jshint())
+    .pipe(jshint.reporter(
+      'jshint-stylish', {
+        verbose : true
+      })
+    )
+    .pipe(jshint.reporter(
+      'fail', {
+        verbose : true
+      })
+    );
+});
+
+gulp.task('build', ['jshint'], function() {
+  return build();
 });
 
 gulp.task('docs', function() {
-  gulp.src('./lib/*.js')
+  gulp.src(JS_LIB)
     .pipe(docs)
     .pipe(gulp.dest('./docs'));
 });
 
 gulp.task('debug', function() {
-  _watch(true);
+  gulp.watch(JS_LIB, [ 'build']);
 });
 
 

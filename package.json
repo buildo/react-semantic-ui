@@ -12,21 +12,24 @@
     "semantic-ui"
   ],
   "devDependencies": {
-    "mocha": "*",
+    "backbone": "*",
     "chai": "*",
-    "react-addons": "*",
+    "gulp": "^3.8.10",
+    "gulp-browserify": "*",
     "gulp-header": "*",
-    "gulp-watch": "*",
+    "gulp-jshint": "^1.9.0",
+    "gulp-load-plugins": "^0.7.1",
+    "gulp-rename": "*",
+    "gulp-uglify": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
-    "through2": "*",
-    "sinon-chai": "*",
-    "backbone": "*",
-    "underscore": "*",
-    "gulp-browserify": "*",
-    "gulp-rename": "*",
+    "jshint-stylish": "^1.0.0",
+    "mocha": "*",
+    "react-addons": "*",
     "reactify": "*",
-    "gulp-uglify": "*"
+    "sinon-chai": "*",
+    "through2": "*",
+    "underscore": "*"
   },
   "license": "MIT"
 }
