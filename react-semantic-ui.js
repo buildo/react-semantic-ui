@@ -38,12 +38,14 @@ if (global.React) {
 } else {
   module.exports = lib;
 }
+
+
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./lib/common":2,"./lib/form":3,"./lib/input":4,"./lib/layout":5}],2:[function(require,module,exports){
-var cache = { id: 0 },
-    reactBackboneAware = !!React.mixins.exists('modelFieldValidator');
+module.exports = function(React, rmm) {
+  var cache = { id: 0 };
 
-module.exports = function(React) {
+
   return {
     uniqueId: function() {
       return 'rsui-' + cache.id++;
@@ -110,11 +112,6 @@ module.exports = function(React) {
     init: function(exports, classData, options) {
       options = options || {};
 
-      // allow for special setup if https://github.com/jhudson8/react-backbone is installed
-      if (reactBackboneAware && options.ifReactBackbone) {
-        options.ifReactBackbone(options);
-      }
-
       var _mixins = exports.mixins;
       if (!exports.mixins) {
         _mixins = exports.mixins || {all: []};
@@ -147,6 +144,7 @@ module.exports = function(React) {
   };
 };
 
+
 },{}],3:[function(require,module,exports){
 module.exports = function(React, common) {
   var exports = {
@@ -178,11 +176,10 @@ module.exports = function(React, common) {
       var props = this.props,
           state = this.state || {},
           className = common.mergeClassNames('field', this._controlClassName && this._controlClassName()),
-          id = this.props.id;
+          id = this.props.id,
           labelAfter = props.labelAfter !== undefined ? props.labelAfter : this.defaultLabelAfter,
           inlineLabel = props.inlineLabel !== undefined ? props.inlineLabel : this.defaultInlineLabel,
-          containerClass = common.mergeClassNames(
-            props.containerClass, this.defaultContainerClass && this.defaultContainerClass()),
+          containerClass = common.mergeClassNames(props.containerClass, this.defaultContainerClass && this.defaultContainerClass()),
           inputFieldProps = common.omit(props, ['label', 'disabled', 'fieldClass', 'value']),
           error = props.error || state.error;
 
@@ -382,6 +379,7 @@ module.exports = function(React, common) {
   return exports;
 };
 
+
 },{}],4:[function(require,module,exports){
 module.exports = function(React, form, common) {
 
@@ -389,17 +387,7 @@ module.exports = function(React, form, common) {
     return props.defaultValue || self.getModelValue();
   }
 
-  React.mixins.add('modelValueAccessor', {
-    getModelValue: function() {
-      return this.state && this.state.value || this.props.value;
-    },
-    setModelValue: function(value) {
-      this.setState({value: value});
-    }
-  });
-
   var exports = {
-    mixins: {all: ['modelValueAccessor']},
 
     optionsRetriever: function(defaultValue) {
       var rtn = (this.props.options || []).map(function(item) {
@@ -568,6 +556,7 @@ module.exports = function(React, form, common) {
         props.value = this.props.value || 'true';
         props.type = 'checkbox';
         props.className = common.mergeClassNames(props.className);
+        props.ref = this.props.ref;
         return React.DOM.input(props);
       },
       getDOMValue: function(el) {
@@ -727,6 +716,7 @@ module.exports = function(React, form, common) {
 
   return exports;
 };
+
 
 },{}],5:[function(require,module,exports){
 module.exports = function(React, common) {
@@ -1095,5 +1085,6 @@ module.exports = function(React, common) {
 
   return exports;
 };
+
 
 },{}]},{},[1])
