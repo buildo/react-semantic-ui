@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+      - "0.12"
+notifications:
+  slack:
+    rooms:
+      - buildo:iVeL8b7n4t8Mkif5nJmHmsix#frontends
